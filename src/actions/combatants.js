@@ -14,10 +14,11 @@ export const startAddCombatant = (combatantData = {}) => {
 			surprised = false,
 			type = 'NPC',
 			initiativeBonus = 0,
-			initiativeRoll = 0
+			initiativeRoll = 0,
+			addToLibrary = false
 			
 		} = combatantData;
-		const combatant = { name, surprised, type, initiativeBonus, initiativeRoll };
+		const combatant = { name, surprised, type, initiativeBonus, initiativeRoll, addToLibrary };
 		
 		return database.ref(`users/${uid}/combatants`).push(combatant).then((ref) => {
 			dispatch(addCombatant({

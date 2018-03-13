@@ -31,6 +31,7 @@ export default class AddCombatantForm extends React.Component {
 	};
 	
 	onInitiativeBonusChange = (e) => {
+		const initiativeBonus = e.target.value;
 		this.setState(() => ({ initiativeBonus }));
 	};
 	
