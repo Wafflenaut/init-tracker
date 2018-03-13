@@ -13,8 +13,8 @@ export const startAddCombatant = (combatantData = {}) => {
 			name = '',
 			surprised = false,
 			type = 'NPC',
-			initiativeBonus = 0;
-			initiativeRoll = 0;
+			initiativeBonus = 0,
+			initiativeRoll = 0
 			
 		} = combatantData;
 		const combatant = { name, surprised, type, initiativeBonus, initiativeRoll };
