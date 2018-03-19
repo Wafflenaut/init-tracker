@@ -3,6 +3,11 @@ export const setLibraryNpcTypeFilter = ( NpcType = 'None') => ({
 	text
 });
 
+export const setNameFilter = ( name = '') => ({
+	type: 'SET_TEXT_FILTER',
+	name
+});
+
 export const setFilterBySurprised = (filterBySurprise = true) => ({
 	type: 'FILTER_BY_SURPRISED',
 	filterBySurprise

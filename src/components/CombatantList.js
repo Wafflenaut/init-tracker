@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CombatantListItem from './CombatantListItem'
-import selectCombatants from '../selectors/combatants'
+import CombatantListItem from './CombatantListItem';
+import selectCombatants from '../selectors/combatants';
 
 export const CombatantList = (props) => (
 	<div className="content-container">
@@ -28,7 +28,7 @@ export const CombatantList = (props) => (
 
 const mapStateToProps = (state) => {
 	return {
-		expenses: selectCombatants(state.combatants, state.filters)
+		combatants: selectCombatants(state.combatants, state.filters)
 	};
 };
 
