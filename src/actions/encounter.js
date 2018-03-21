@@ -1,6 +1,8 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
 
+//LIKELY JUNK THIS - SET TIES TO A FILTER
+
 export const addCombatant = (combatant) => ({
 	type: 'ADD_COMBATANT',
 	combatant
@@ -11,7 +13,7 @@ export const startAddCombatant = (combatantData = {}) => {
 		const uid = getState().auth.uid;
 		const {
 			name = '',
-			surprise = false,
+			surprised = false,
 			active = true,
 			type = 'NPC',
 			initiativeBonus = 0,
@@ -19,7 +21,7 @@ export const startAddCombatant = (combatantData = {}) => {
 			addToLibrary = false
 			
 		} = combatantData;
-		const combatant = { name, active, surprise, type, initiativeBonus, initiativeRoll, addToLibrary };
+		const combatant = { name, surprised, type, initiativeBonus, initiativeRoll, addToLibrary };
 		
 		return database.ref(`users/${uid}/combatants`).push(combatant).then((ref) => {
 			dispatch(addCombatant({
@@ -30,62 +32,57 @@ export const startAddCombatant = (combatantData = {}) => {
 	};
 };
 
-export const removeCombatant = ({id} = {}) => ({
-	type: 'REMOVE_COMBATANT',
-	id
+export const resetEncounter = () => ({
+	type: 'REMOVE_COMBATANT'
 });
 
-export const startRemoveCombatant = ({id} = {}) => {
+export const startResetEncounter = () => {
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/combatants/${id}`).remove().then(() => {
+		//change this to set to default
+		return database.ref(`users/${uid}/encounter`).remove().then(() => {
+			//remove all combatants as well
 			dispatch(removeCombatant({id}));
 		});
 	};
 };
 
-export const editCombatant = (id, updates) => ({
-	type: 'EDIT_COMBATANT',
-	id,
+export const updateEncounter = (updates) => ({
+	type: 'UPDATE_ENCOUNTER',
 	updates
 });
 
-export const startEditCombatant = (id, updates) => {
+export const startUpdateEncounter = (updates) => {
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/combatants/${id}`).update({
+		return database.ref(`users/${uid}/encounter`).update({
 			...updates
 		}).then(() => {
-			dispatch(editCombatant(id, updates));
+			dispatch(updateEncounter(updates));
 		});
 	};
 };
 
-export const setCombatants = (combatants) => ({
-	type: 'SET_COMBATANTS',
-	combatants
+export const setEncounter = (encounter) => ({
+	type: 'SET_ENCOUNTER',
+	encounter
 });
 
 
 
-export const startSetCombatants = () => {
+export const startSetEncounter = () => {
 	
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/combatants`)
+		return database.ref(`users/${uid}/encounter`)
 			.once('value')
 			.then((snapshot) => {
-				const combatants = [];
+				const encounter = {
+					...childSnapshot.val()
+				};
+			
 				
-				snapshot.forEach((childSnapshot) => {
-					combatants.push({
-						id: childSnapshot.key,
-						...childSnapshot.val()
-					});
-				});
-				
-				
-			dispatch(setCombatants(combatants));
+			dispatch(setEncounter(encounter));
 				
 		});
 		

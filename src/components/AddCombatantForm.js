@@ -6,7 +6,8 @@ export default class AddCombatantForm extends React.Component {
 			
 		this.state = {
 			name: props.combatant ? props.combatant.name : '',
-			surprised: props.combatant ? props.combatant.surprised : false,
+			active: props.combatant ? props.combatant.active : true,
+			surprise: props.combatant ? props.combatant.surprise : false,
 			type: props.combatant ? props.combatant.type : 'NPC/Monster',
 			initiativeBonus: props.combatant ? props.combatant.initiativeBonus : '',
 			initiativeRoll: props.combatant ? props.combatant.initiativeRoll : 0,
@@ -20,9 +21,11 @@ export default class AddCombatantForm extends React.Component {
 		this.setState(() => ({name}));
 	};
 	
-	onSurprisedChange = (e) => {
-		const surprised = e.target.value;
-		this.setState(() => ({surprised}));
+	onSurpriseChange = (e) => {
+		const surprise = e.target.checked;
+		console.log(e.target.checked);
+		console.log(surprise)
+		this.setState(() => ({surprise}));
 	};
 	
 	onTypeChange = (e) => {
@@ -50,7 +53,8 @@ export default class AddCombatantForm extends React.Component {
 			this.setState(() => ({error: ''}));
 			this.props.onSubmit({
 				name: this.state.name,
-				surprised: this.state.surprised,
+				active: this.state.active,
+				surprise: this.state.surprise,
 				type: this.state.type,
 				initiativeBonus: this.state.initiativeBonus,
 				initiativeRoll: this.state.initiativeRoll,
@@ -73,12 +77,11 @@ export default class AddCombatantForm extends React.Component {
 						value={this.state.name}
 						onChange={this.onNameChange}
 					/>
-					<p>Surprised</p>
+					<p>Active in Surprise</p>
 					<input
 						type="checkbox"
-						name="surprised"
-						value={this.state.surprised}
-						onChange={this.onSurprisedChange}
+						name="surprise"
+						onChange={this.onSurpriseChange}
 					/>
 					<p>Combatant Type</p>
 					<select defaultValue={this.state.type} onChange={this.onTypeChange}>

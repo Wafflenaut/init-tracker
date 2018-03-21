@@ -17,6 +17,7 @@ export default class TieBreaker extends React.Component {
 	render() {
 		return (
 			<div>
+			<h3>Players Win Ties:</h3>
 				<input
 					type="checkbox"
 					name="tieBreaker"

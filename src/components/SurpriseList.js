@@ -1,25 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import EncounterListItem from './EncounterListItem';
-import { sortCombatants } from '../selectors/combatants';
+import CombatantListItem from './CombatantListItem';
+import { surpriseCombatants } from '../selectors/surpriseCombatants';
 
 export const EncounterList = (props) => (
 	<div className="content-container">
 		<div className="list-header">
-			<div>Combatant</div>
-			<div>Active in Surprise</div>
-			<div>Type</div>
-			<div>Initiative Bonus</div>
+			<div>Surprise</div>
 		</div>
 		<div className="list-body">
 			{
 				props.combatants.length === 0 ? (
-					<div className="list-item list-item--message">
-						<span>No Combatants</span>
-					</div>
+					<div>No Surprise</div>
 				) : (
 					props.combatants.map((combatant) => {
-						return <EncounterListItem key={combatant.id} {...combatant} />;
+						return <CombatantListItem key={combatant.id} {...combatant} />;
 					})
 				)
 			}
@@ -30,7 +25,7 @@ export const EncounterList = (props) => (
 
 const mapStateToProps = (state) => {
 	return {
-		combatants: sortCombatants(state.combatants)
+		combatants: surpriseCombatants(state.combatants, state.filters)
 	};
 };
 
