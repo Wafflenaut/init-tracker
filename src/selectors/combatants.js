@@ -3,4 +3,10 @@ export const sortCombatants = ( combatants) => {
 	return combatants.sort((a,b) => {
 		return a.name < b.name ? 1 : -1;
 	});
-}
+};
+
+export const currentCombatant = ( combatants, filters) => {
+	return combatants.filter((combatant) => {
+		return combatant.id == filters.currentCombatant;
+	});
+};

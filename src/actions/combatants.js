@@ -61,6 +61,23 @@ export const startEditCombatant = (id, updates) => {
 	};
 };
 
+export const setCombatantActiveStatus = (id, active) => ({
+	type: 'SET_COMBATANT_ACTIVE_STATUS',
+	id,
+	active
+})
+
+export const startSetCombatantActiveStatus = (id, active) => {
+	return (dispatch, getState) => {
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/combatants/${id}`).update({
+			active
+		}).then(() => {
+			dispatch(setCombatantActive(id, active));
+		});
+	};
+};
+
 export const setCombatants = (combatants) => ({
 	type: 'SET_COMBATANTS',
 	combatants

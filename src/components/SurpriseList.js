@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CombatantListItem from './CombatantListItem';
 import { surpriseCombatants } from '../selectors/surpriseCombatants';
 
-export const EncounterList = (props) => (
+export const surpriseList = (props) => (
 	<div className="content-container">
 		<div className="list-header">
 			<div>Surprise</div>
@@ -14,7 +14,8 @@ export const EncounterList = (props) => (
 					<div>No Surprise</div>
 				) : (
 					props.combatants.map((combatant) => {
-						return <CombatantListItem key={combatant.id} {...combatant} />;
+						{/*return <CombatantListItem key={combatant.id} {...combatant} />;*/}
+						return <CombatantListItem key={combatant.id} combatant />
 					})
 				)
 			}
@@ -23,10 +24,11 @@ export const EncounterList = (props) => (
 );
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
 	return {
 		combatants: surpriseCombatants(state.combatants, state.filters)
 	};
 };
 
-export default connect(mapStateToProps)(EncounterList);
+
+export default connect(mapStateToProps)(surpriseList);

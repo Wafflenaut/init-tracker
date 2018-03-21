@@ -1,6 +1,7 @@
 const filtersReducerDefaultState = {
 	playersWinTies: false,
-	currentCombatant: ''
+	currentCombatant: '',
+	currentCombatant: Infinity
 };
 
 export default (state = filtersReducerDefaultState, action) => {
