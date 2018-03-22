@@ -23,8 +23,7 @@ export default class AddCombatantForm extends React.Component {
 	
 	onSurpriseChange = (e) => {
 		const surprise = e.target.checked;
-		console.log(e.target.checked);
-		console.log(surprise)
+
 		this.setState(() => ({surprise}));
 	};
 	
@@ -39,6 +38,8 @@ export default class AddCombatantForm extends React.Component {
 	};
 	
 	onAddToLibraryChange = (e) => {
+		const addToLibrary = e.target.checked;
+		console.log(`Add to library ${addToLibrary}`);
 		this.setState(() => ({ addToLibrary }));
 	};
 	
@@ -100,10 +101,9 @@ export default class AddCombatantForm extends React.Component {
 					<input
 						type="checkbox"
 						name="addToLibrary"
-						value={this.state.addToLibrary}
-						onChange={this.onAddToLibraryChangeChange}
+						onChange={this.onAddToLibraryChange}
 					/>
-					<button>Add Combatant</button>
+					<p><button>Add Combatant</button></p>
 				</form>
 			</div>
 		)

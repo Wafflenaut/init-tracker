@@ -5,10 +5,14 @@ import { startEditCombatant } from '../actions/combatants';
 
 
 export class CombatantListItem extends React.Component {
+	constructor(props){
+		super(props);
+		
+	}
 	
 	onClick = () => {
 		const active = !this.props.combatant.active;
-		this.props.startEditCombatant(this.props.combatant.id, active);
+		this.props.oncClick(this.props.combatant.id, active);
 	}
 	
 	render() {
@@ -23,7 +27,7 @@ export class CombatantListItem extends React.Component {
 		)
 	}
 }
-
+/*
 const mapDispatchToProps = (dispatch, props) => ({
 		startEditCombatant: (id, expense) => dispatch(startEditExpense(id, expense))
 });
@@ -36,7 +40,7 @@ const mapStateToProps = (state, props) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CombatantListItem);
-
+*/
 /*
 const CombatantListItem = ({ dispatch, id, name, active, initiativeRoll}) => (
 	<Link className="list-item" to={`/edit/${id}`}>

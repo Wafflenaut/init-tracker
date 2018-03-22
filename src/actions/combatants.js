@@ -13,7 +13,7 @@ export const startAddCombatant = (combatantData = {}) => {
 			name = '',
 			surprise = false,
 			active = true,
-			type = 'NPC',
+			type = 'NPC/Monster',
 			initiativeBonus = 0,
 			initiativeRoll = 0,
 			addToLibrary = false

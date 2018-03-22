@@ -3,26 +3,35 @@ import { connect } from 'react-redux';
 import CombatantListItem from './CombatantListItem';
 import { surpriseCombatants } from '../selectors/surpriseCombatants';
 
-export const surpriseList = (props) => (
-	<div className="content-container">
-		<div className="list-header">
-			<div>Surprise</div>
+export class surpriseList extends React.Component{
+	onClick = (id, active) => {
+		this.props.startSetCombatantActiveStatus(id, active);
+	}
+	
+	render() {
+		<div className="content-container">
+			<div className="list-header">
+				<div>Surprise</div>
+			</div>
+			<div className="list-body">
+				{
+					this.props.combatants.length === 0 ? (
+						<div>No Surprise</div>
+					) : (
+						this.props.combatants.map((combatant) => {
+							{/*return <CombatantListItem key={combatant.id} {...combatant} />;*/}
+							return <CombatantListItem key={combatant.id} {...combatant} onClick={this.onClick} />
+						})
+					)
+				}
+			</div>
 		</div>
-		<div className="list-body">
-			{
-				props.combatants.length === 0 ? (
-					<div>No Surprise</div>
-				) : (
-					props.combatants.map((combatant) => {
-						{/*return <CombatantListItem key={combatant.id} {...combatant} />;*/}
-						return <CombatantListItem key={combatant.id} combatant />
-					})
-				)
-			}
-		</div>
-	</div>
-);
+	}
+};
 
+const mapDispatchToProps = (dispatch) => ({
+	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatActiveStatus(id, active))
+});
 
 const mapStateToProps = (state, props) => {
 	return {
@@ -31,4 +40,4 @@ const mapStateToProps = (state, props) => {
 };
 
 
-export default connect(mapStateToProps)(surpriseList);
+export default connect(mapStateToProps, mapDispatchToProps)(surpriseList);
