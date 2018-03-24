@@ -73,7 +73,7 @@ export const startSetCombatantActiveStatus = (id, active) => {
 		return database.ref(`users/${uid}/combatants/${id}`).update({
 			active
 		}).then(() => {
-			dispatch(setCombatantActive(id, active));
+			dispatch(setCombatantActiveStatus(id, active));
 		});
 	};
 };

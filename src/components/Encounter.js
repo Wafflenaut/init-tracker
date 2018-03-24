@@ -9,8 +9,8 @@ const DashboardPage = () => (
     Dashboard page content
 	<Link to="/add-combatant">Add Combatant</Link>
 	<SurpriseList />
-	{/*<ActiveEncounterList />*/}
-	{/*<InactiveEncounterList />*/}
+	<ActiveEncounterList />
+	<InactiveEncounterList />
   </div>
 );
 

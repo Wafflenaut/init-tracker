@@ -5,22 +5,19 @@ import { startEditCombatant } from '../actions/combatants';
 
 
 export class CombatantListItem extends React.Component {
-	constructor(props){
-		super(props);
-		
-	}
 	
 	onClick = () => {
-		const active = !this.props.combatant.active;
-		this.props.oncClick(this.props.combatant.id, active);
+		const active = !this.props.active;
+		const id = this.props.id
+		this.props.onClick(id, active);
 	}
 	
 	render() {
 		return (
 				<div>
-					<h3 className="list-item__title">{this.props.combatant.name}</h3>
+					<h3 className="list-item__title">{this.props.name}</h3>
 					{
-						active ? (<button onClick={this.onClick}>Remove From Combat</button>) : 
+						this.props.active ? (<button onClick={this.onClick}>Remove From Combat</button>) : 
 							(<button onClick={this.onClick}>Return to Combat</button>)
 					}
 				</div>

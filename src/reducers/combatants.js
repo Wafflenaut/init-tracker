@@ -21,6 +21,20 @@ export default (state = combatantReducerDefaultState, action) => {
 					return combatant;
 				}
 			});
+		case 'SET_COMBATANT_ACTIVE_STATUS':
+			return state.map((combatant) => {
+				if(combatant.id === action.id) {
+					const active = action.active;
+
+					return {
+						...combatant,
+						active
+					}
+				}
+				else {
+					return combatant;
+				}
+			});
 		case 'SET_COMBATANTS':
 			return action.combatants;
 		default:

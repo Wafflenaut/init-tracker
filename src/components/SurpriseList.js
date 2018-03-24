@@ -1,14 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CombatantListItem from './CombatantListItem';
+import { CombatantListItem } from './CombatantListItem';
 import { surpriseCombatants } from '../selectors/surpriseCombatants';
+import { startSetCombatantActiveStatus } from '../actions/combatants';
 
-export class surpriseList extends React.Component{
+export class SurpriseList extends React.Component{
 	onClick = (id, active) => {
 		this.props.startSetCombatantActiveStatus(id, active);
-	}
+	};
 	
 	render() {
+		return (
 		<div className="content-container">
 			<div className="list-header">
 				<div>Surprise</div>
@@ -26,11 +28,12 @@ export class surpriseList extends React.Component{
 				}
 			</div>
 		</div>
-	}
+	);
+	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatActiveStatus(id, active))
+	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active))
 });
 
 const mapStateToProps = (state, props) => {
@@ -40,4 +43,4 @@ const mapStateToProps = (state, props) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(surpriseList);
+export default connect(mapStateToProps, mapDispatchToProps)(SurpriseList);

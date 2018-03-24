@@ -1,7 +1,8 @@
 //Filters for all combatants that are active
 //Sorts by initiativeRoll (descending)
 export const inactiveCombatants = ( combatants ) => {
-
+	console.log('inactives');
+	console.log(combatants);
 	return combatants.filter((combatant) => {
 		const active = combatant.active;
 		
