@@ -1,7 +1,7 @@
 export const sortCombatants = ( combatants) => {
 	console.log(combatants);
 	return combatants.sort((a,b) => {
-		return a.name < b.name ? 1 : -1;
+		return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
 	});
 };
 

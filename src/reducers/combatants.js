@@ -35,6 +35,7 @@ export default (state = combatantReducerDefaultState, action) => {
 					return combatant;
 				}
 			});
+
 		case 'SET_COMBATANTS':
 			return action.combatants;
 		default:
