@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sortCombatants } from '../selectors/combatants';
 import { startInitiateEncounter } from '../actions/combatants';
@@ -28,9 +29,13 @@ export class EncounterSetup extends React.Component {
 			this.setState(() => ({error: ''}));
 			this.props.startInitiateEncounter();
 		}
+		this.props.history.push('/encounter');
+		console.log(this.props);
 	};
 	
 	render() {
+		
+		
 		return (
 			<div>
 			<h3>Players Win Ties:</h3>
@@ -62,4 +67,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EncounterSetup);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EncounterSetup));

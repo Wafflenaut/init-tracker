@@ -7,6 +7,6 @@ export const sortCombatants = ( combatants) => {
 
 export const currentCombatant = ( combatants, filters) => {
 	return combatants.filter((combatant) => {
-		return combatant.id == filters.currentCombatant;
+		return combatant.id == filters.currentCombatantId;
 	});
 };

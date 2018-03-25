@@ -87,12 +87,12 @@ export const startInitiateEncounter = () => {
 	
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
-		let tempCombatants = []
+		let combatants = []
 		//let combatants = getState().combatants;
 
 		getState().combatants.forEach((combatant) =>{
 			const initiativeRoll = Math.floor(Math.random() * (20000)) + 1 + (combatant.initiativeBonus * 1000);
-			tempCombatants.push({
+			combatants.push({
 				...combatant,
 				initiativeRoll
 			});
@@ -110,7 +110,7 @@ export const startInitiateEncounter = () => {
 		//sorts combatants first by initiative order
 		//then by whichever type wins ties
 		//then randomly in the event the types are the same
-		tempCombatants = tempCombatants.sort((a, b) => {
+		combatants = combatants.sort((a, b) => {
 			if(a.initiativeRoll < b.initiativeRoll){
 				return -1;
 			}
@@ -118,7 +118,7 @@ export const startInitiateEncounter = () => {
 				return 1;
 			}
 			
-			const playersWinTies = true; //this needs to be brought in later
+			const playersWinTies = getState().filters.playersWinTies; //this needs to be brought in later
 			if(a.type === 'Player' && b.type === 'NPC/Monster' && playersWinTies){
 				return -1;
 			}
@@ -141,19 +141,16 @@ export const startInitiateEncounter = () => {
 			}
 		});
 	
-	for(let i = 0; i < tempCombatants.length; i++){
-		tempCombatants[i].order = i + 1;
+	for(let i = 0; i < combatants.length; i++){
+		combatants[i].order = i + 1;
 	}
-	
-			console.log('tempCombatants after init roll');
-		console.log(tempCombatants);
-	/*
+
 	return database.ref(`users/${uid}/combatants`).update({
 			...combatants
 	}).then(() => {
 			dispatch(setCombatants(combatants));
 	});
-	*/
+
 	};
 	
 };

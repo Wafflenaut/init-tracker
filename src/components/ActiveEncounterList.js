@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { CombatantListItem } from './CombatantListItem';
-import { encounterCombatants } from '../selectors/encounterCombatants';
+import { activeCombatants } from '../selectors/activeCombatants';
 import { startSetCombatantActiveStatus } from '../actions/combatants';
 
 export class ActiveEncounterList extends React.Component {
@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => {
 	return {
-		combatants: encounterCombatants(state.combatants)
+		combatants: activeCombatants(state.combatants, state.filters)
 	};
 };
 

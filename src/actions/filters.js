@@ -3,10 +3,23 @@ export const setPlayersWinTies = ( playersWinTies = false) => ({
 	playersWinTies
 });
 
-export const setPlayersWinTies = ( currentCombatant = '') => ({
+export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOrder = 0) => ({
 	type: 'SET_CURRENT_COMBATANT',
-	currentCombatant
+	currentCombatantId,
+	currentCombatantOrder
 });
+
+export const startSetCurrentCombastant = (currentCombatantId = '', currentCombatantOrder = 0) => {
+	return (dispatch, getState) => {
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/filters`).update({
+			currentCombatantId,
+			currentCombatantOrder
+		}).then(() => {
+			dispatch(setCurrentCombatant(currentCombatantId, currentCombatantOrder));
+		});
+	};
+};
 
 export const setLibraryNpcTypeFilter = ( NpcType = 'None') => ({
 	type: 'SET_NPCTYPE_FILTER',
