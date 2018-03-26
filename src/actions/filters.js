@@ -1,7 +1,14 @@
+import { initialCurrentCombatant } from '../selectors/combatants';
+
 export const setPlayersWinTies = ( playersWinTies = false) => ({
 	type: 'SET_PLAYERS_WIN_TIES',
 	playersWinTies
 });
+
+export const startSetInitialCurrentCombatant = (combatants) => {
+	const initialCombatant = initialCurrentCombatant(combatants);
+	setCurrentCombatant(initialCombatant.id, initialCombatant.order);
+};
 
 export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOrder = 0) => ({
 	type: 'SET_CURRENT_COMBATANT',
@@ -9,7 +16,7 @@ export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOr
 	currentCombatantOrder
 });
 
-export const startSetCurrentCombastant = (currentCombatantId = '', currentCombatantOrder = 0) => {
+export const startSetCurrentCombatant = (currentCombatantId = '', currentCombatantOrder = 0) => {
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
 		return database.ref(`users/${uid}/filters`).update({

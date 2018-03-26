@@ -5,7 +5,7 @@ import { currentCombatant } from '../selectors/combatants';
 import { startSetCombatantActiveStatus } from '../actions/combatants';
 
 export class SurpriseList extends React.Component{
-	onClick = (id, active) => {
+	onClickActive = (id, active) => {
 		this.props.startSetCombatantActiveStatus(id, active);
 	};
 	
@@ -20,7 +20,7 @@ export class SurpriseList extends React.Component{
 					this.props.combatant ? (
 						<div>
 							<h3>{this.props.combatant.name}</h3>
-							<button>Remove From Combat</button>
+							<button onClick={this.onClickActive}>Remove From Combat</button>
 							<button>End Turn</button>
 						</div>
 					) : (

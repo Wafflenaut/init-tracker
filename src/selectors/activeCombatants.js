@@ -9,7 +9,7 @@ export const activeCombatants = ( combatants, filters) => {
 		return active &&  filters.currentCombatantId != id;
 	}).sort((a, b) => {
 		return combatants.sort((a,b) => {
-			return a.initiativeRoll > b.initiativeRoll ? 1 : -1;
+			return a.initiativeRoll > b.initiativeRoll ? -1 : 1;
 		});
 	});
 };

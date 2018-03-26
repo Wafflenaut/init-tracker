@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
+import { startSetInitialCurrentCombatant } from './filters';
 
 export const addCombatant = (combatant) => ({
 	type: 'ADD_COMBATANT',
@@ -144,85 +145,24 @@ export const startInitiateEncounter = () => {
 	for(let i = 0; i < combatants.length; i++){
 		combatants[i].order = i + 1;
 	}
+	
 
-	return database.ref(`users/${uid}/combatants`).update({
-			...combatants
+	/*
+	return combatants.map((combatant) => {
+		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant)
+	});*/
+	
+	return combatants.forEach((combatant) => {
+		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant);
 	}).then(() => {
-			dispatch(setCombatants(combatants));
+		//dispatch(startSetInitialCurrentCombatant(combatants));
+		dispatch(setCombatants(combatants));		
 	});
 
 	};
 	
 };
-/*	
-//will set the initiative rolls and order
-export const startInitiateEncounter = () => {
-	
-	return (dispatch, getState) => {
-		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/combatants`)
-			.once('value')
-			.then((snapshot) => {
-				let combatants = [];
-				
-				snapshot.forEach((childSnapshot) => {
-					const initiativeRoll = Math.floor(Math.random() * (20000)) + 1 + (childSnapshot.initiativeBonus * 1000);
-					combatants.push({
-						id: childSnapshot.key,
-						...childSnapshot.val(),
-						initiativeRoll
-					});
-				});
-				
-				//sorts combatants first by initiative order
-				//then by whichever type wins ties
-				//then randomly in the event the types are the same
-				combatants.sort((a, b) => {
-					if(a.initiativeRoll < b.initiativeRoll){
-						return -1;
-					}
-					if(a.initiativeRoll > b.initiativeRoll){
-						return 1;
-					}
-					
-					const playersWinTies = true; //this needs to be brought in later
-					if(a.type === 'Player' && b.type === 'NPC/Monster' && playersWinTies){
-						return -1;
-					}
-					if(a.type === 'Player' && b.type ==='NPC/Monster' && !playersWinTies){
-						return 1;
-					}
-					if(a.type === 'NPC/Monster' && b.type === 'Player' && playersWinTies){
-						return 1;
-					}
-					if(a.type === 'NPC/Monster' && b.type === 'Player' && !playersWinTies){
-						return -1;
-					}
-					
-					//randomly determine order
-					if(Math.floor(Math.random() * 2) + 1 == 1){
-						return 1
-					}
-					else{
-						return -1
-					}
-				});
-				
-			for(let i = 0; i < combatants.length; i++){
-				combatants[i].order = i + 1;
-			}
 
-					
-			});
-				
-				
-			dispatch(setCombatants(combatants));
-				
-		});
-		
-	};
-};
-*/
 
 export const setCombatants = (combatants) => ({
 	type: 'SET_COMBATANTS',
