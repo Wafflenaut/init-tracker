@@ -152,9 +152,11 @@ export const startInitiateEncounter = () => {
 		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant)
 	});*/
 	
-	return combatants.forEach((combatant) => {
-		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant);
-	}).then(() => {
+	return database.ref(`users/${uid}/combatants`).setValue("key": 
+	
+	//return combatants.forEach((combatant) => {
+		//database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant);
+	//}).then(() => {
 		//dispatch(startSetInitialCurrentCombatant(combatants));
 		dispatch(setCombatants(combatants));		
 	});
