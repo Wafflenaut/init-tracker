@@ -21,7 +21,9 @@ export const startSetPlayersWinTies = ( playersWinTies = false ) => {
 export const startSetInitialCurrentCombatant = () => {
 	return (dispatch, getState) => {
 		const combatants = getState().combatants;
-		const filters = getState().filters;
+		const encounter = getState().encounter;
+		console.log('encounter in startSetInitialCurrentCombatant');
+		console.log(encounter);
 		const uid = getState().auth.uid;
 		let surpriseCombatants = combatants.filter(combatant => combatant.surprise === true);
 		let initialCombatant = {}
@@ -36,8 +38,8 @@ export const startSetInitialCurrentCombatant = () => {
 		const currentCombatantId = initialCombatant.id;
 		const currentCombatantOrder = initialCombatant.order;
 		
-		return database.ref(`users/${uid}/filters`).update({
-			...filters,
+		return database.ref(`users/${uid}/encounter`).update({
+			...encounter,
 			currentCombatantId,
 			currentCombatantOrder
 		}).then(() => {
@@ -56,7 +58,7 @@ export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOr
 export const startSetCurrentCombatant = (currentCombatantId = '', currentCombatantOrder = 0) => {
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/filters`).update({
+		return database.ref(`users/${uid}/encounter`).update({
 			currentCombatantId,
 			currentCombatantOrder
 		}).then(() => {
@@ -96,6 +98,7 @@ export const startSetEncounter = () => {
 			.then((snapshot) => {
 				console.log('encounter snapshot');
 				console.log(snapshot.val());
+				console.log('encounter snapshot end');
 				const encounter = snapshot.val();
 				
 			dispatch(setEncounter(encounter));

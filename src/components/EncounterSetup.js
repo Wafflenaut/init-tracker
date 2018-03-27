@@ -47,7 +47,6 @@ export class EncounterSetup extends React.Component {
 			
 		}
 		this.props.history.push('/encounter');
-		console.log(this.props);
 	};
 	
 	render() {

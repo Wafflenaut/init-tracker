@@ -1,14 +1,14 @@
 export const sortCombatants = ( combatants) => {
-	console.log(combatants);
 	return combatants.sort((a,b) => {
 		return a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1;
 	});
 };
 
 export const currentCombatant = ( combatants, encounter) => {
-	console.log(encounter);
+	//const currCombatantId = encounter.currCombatantId ? encounter.currCombatantId : 
+	console.log('current combatant');
+	console.log(encounter)
 	const currCombatant = combatants.filter(combatant => combatant.id === encounter.currentCombatantId);
-	console.log(currCombatant);
 	return currCombatant;
 };
 
