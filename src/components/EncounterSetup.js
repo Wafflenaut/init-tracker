@@ -3,19 +3,23 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sortCombatants } from '../selectors/combatants';
 import { startInitiateEncounter } from '../actions/combatants';
-import { startSetInitialCurrentCombatant } from '../actions/filters';
+import { startSetPlayersWinTies, startSetInitialCurrentCombatant } from '../actions/encounter';
+
 
 export class EncounterSetup extends React.Component {
 	constructor(props){
 		super(props)
 		
 		this.state = {
-			playersWinTies: false
+			playersWinTies: false,
+			error: ''
 		};
 	}
 	
 	onTieBreakerChange = (e) => {
-		const playersWinTies = e.target.value;
+		
+		const playersWinTies = e.target.checked;
+		console.log(`playersWinTies ${playersWinTies}`);
 		this.setState(() => ({playersWinTies}));
 	};
 	
@@ -29,6 +33,7 @@ export class EncounterSetup extends React.Component {
 			this.setState(() => ({error: ''}));
 			this.props.startInitiateEncounter();
 			this.props.startSetInitialCurrentCombatant();
+			this.props.startSetPlayersWinTies(this.state.playersWinTies);
 
 			/*
 			let encounterSetupInit = new Promise(() => {
@@ -54,7 +59,6 @@ export class EncounterSetup extends React.Component {
 				<input
 					type="checkbox"
 					name="tieBreaker"
-					value={this.state.playerWinsTies}
 					onChange={this.onTieBreakerChange}
 				/>
 			<div>
@@ -71,7 +75,8 @@ export class EncounterSetup extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
 	startInitiateEncounter: () => dispatch(startInitiateEncounter()),
-	startSetInitialCurrentCombatant: () => dispatch(startSetInitialCurrentCombatant())
+	startSetInitialCurrentCombatant: () => dispatch(startSetInitialCurrentCombatant()),
+	startSetPlayersWinTies: (playersWinTies) => dispatch(startSetPlayersWinTies(playersWinTies))
 });
 
 const mapStateToProps = (state) => {

@@ -5,9 +5,9 @@ export const sortCombatants = ( combatants) => {
 	});
 };
 
-export const currentCombatant = ( combatants, filters) => {
-	console.log(filters);
-	const currCombatant = combatants.filter(combatant => combatant.id == filters.currentCombatantId);
+export const currentCombatant = ( combatants, encounter) => {
+	console.log(encounter);
+	const currCombatant = combatants.filter(combatant => combatant.id === encounter.currentCombatantId);
 	console.log(currCombatant);
 	return currCombatant;
 };

@@ -1,67 +1,84 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
+import { initialCurrentCombatant } from '../selectors/combatants';
 
-//LIKELY JUNK THIS - SET TIES TO A FILTER
-
-export const addCombatant = (combatant) => ({
-	type: 'ADD_COMBATANT',
-	combatant
+export const setPlayersWinTies = ( playersWinTies = false) => ({
+	type: 'SET_PLAYERS_WIN_TIES',
+	playersWinTies
 });
 
-export const startAddCombatant = (combatantData = {}) => {
-	return (dispatch, getState) => {
-		const uid = getState().auth.uid;
-		const {
-			name = '',
-			surprised = false,
-			active = true,
-			type = 'NPC',
-			initiativeBonus = 0,
-			initiativeRoll = 0,
-			addToLibrary = false
-			
-		} = combatantData;
-		const combatant = { name, surprised, type, initiativeBonus, initiativeRoll, addToLibrary };
-		
-		return database.ref(`users/${uid}/combatants`).push(combatant).then((ref) => {
-			dispatch(addCombatant({
-				id: ref.key,
-				...combatant
-			}));
-		});
-	};
-};
-
-export const resetEncounter = () => ({
-	type: 'REMOVE_COMBATANT'
-});
-
-export const startResetEncounter = () => {
-	return (dispatch, getState) => {
-		const uid = getState().auth.uid;
-		//change this to set to default
-		return database.ref(`users/${uid}/encounter`).remove().then(() => {
-			//remove all combatants as well
-			dispatch(removeCombatant({id}));
-		});
-	};
-};
-
-export const updateEncounter = (updates) => ({
-	type: 'UPDATE_ENCOUNTER',
-	updates
-});
-
-export const startUpdateEncounter = (updates) => {
+export const startSetPlayersWinTies = ( playersWinTies = false ) => {
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
 		return database.ref(`users/${uid}/encounter`).update({
-			...updates
+			playersWinTies
 		}).then(() => {
-			dispatch(updateEncounter(updates));
+			dispatch(setPlayersWinTies(playersWinTies));
+		});
+	}
+}
+
+export const startSetInitialCurrentCombatant = () => {
+	return (dispatch, getState) => {
+		const combatants = getState().combatants;
+		const filters = getState().filters;
+		const uid = getState().auth.uid;
+		let surpriseCombatants = combatants.filter(combatant => combatant.surprise === true);
+		let initialCombatant = {}
+		
+		if(surpriseCombatants.length === 0){	
+			initialCombatant = combatants.filter(combatant => combatant.order == 1)[0];	
+		}
+		else{
+			surpriseCombatants.sort((a,b) => {return a.order-b.order});
+			initialCombatant = surpriseCombatants[0];
+		}
+		const currentCombatantId = initialCombatant.id;
+		const currentCombatantOrder = initialCombatant.order;
+		
+		return database.ref(`users/${uid}/filters`).update({
+			...filters,
+			currentCombatantId,
+			currentCombatantOrder
+		}).then(() => {
+			dispatch(setCurrentCombatant(initialCombatant.id, initialCombatant.order));
+		});
+		
+	};
+};
+
+export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOrder = 0) => ({
+	type: 'SET_CURRENT_COMBATANT',
+	currentCombatantId,
+	currentCombatantOrder
+});
+
+export const startSetCurrentCombatant = (currentCombatantId = '', currentCombatantOrder = 0) => {
+	return (dispatch, getState) => {
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/filters`).update({
+			currentCombatantId,
+			currentCombatantOrder
+		}).then(() => {
+			dispatch(setCurrentCombatant(currentCombatantId, currentCombatantOrder));
 		});
 	};
 };
+
+export const setLibraryNpcTypeFilter = ( NpcType = 'None') => ({
+	type: 'SET_NPCTYPE_FILTER',
+	text
+});
+
+export const setNameFilter = ( name = '') => ({
+	type: 'SET_TEXT_FILTER',
+	name
+});
+
+export const setFilterBySurprised = (filterBySurprise = true) => ({
+	type: 'FILTER_BY_SURPRISED',
+	filterBySurprise
+});
 
 export const setEncounter = (encounter) => ({
 	type: 'SET_ENCOUNTER',
@@ -77,10 +94,9 @@ export const startSetEncounter = () => {
 		return database.ref(`users/${uid}/encounter`)
 			.once('value')
 			.then((snapshot) => {
-				const encounter = {
-					...childSnapshot.val()
-				};
-			
+				console.log('encounter snapshot');
+				console.log(snapshot.val());
+				const encounter = snapshot.val();
 				
 			dispatch(setEncounter(encounter));
 				

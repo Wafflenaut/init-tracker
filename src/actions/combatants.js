@@ -118,7 +118,7 @@ export const startInitiateEncounter = () => {
 				return -1;
 			}
 			
-			const playersWinTies = getState().filters.playersWinTies; //this needs to be brought in later
+			const playersWinTies = getState().encounter.playersWinTies; //this needs to be brought in later
 			if(a.type === 'Player' && b.type === 'NPC/Monster' && playersWinTies){
 				return -1;
 			}
