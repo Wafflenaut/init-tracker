@@ -113,10 +113,10 @@ export const startInitiateEncounter = () => {
 		//then randomly in the event the types are the same
 		combatants = combatants.sort((a, b) => {
 			if(a.initiativeRoll < b.initiativeRoll){
-				return -1;
+				return 1;
 			}
 			if(a.initiativeRoll > b.initiativeRoll){
-				return 1;
+				return -1;
 			}
 			
 			const playersWinTies = getState().filters.playersWinTies; //this needs to be brought in later
@@ -146,20 +146,29 @@ export const startInitiateEncounter = () => {
 		combatants[i].order = i + 1;
 	}
 	
+	var mapPromise =  combatants.map((combatant) => {
+		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant)
+	});
+	
+	Promise.all(mapPromise).then(()=> {
+		dispatch(setCombatants(combatants));
+	});
 
 	/*
 	return combatants.map((combatant) => {
 		database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant)
+	}).then(() => {
+		dispatch(setCombatants(combatants));
 	});*/
 	
-	return database.ref(`users/${uid}/combatants`).setValue("key": 
+	//return database.ref(`users/${uid}/combatants`).setValue("key": 
 	
 	//return combatants.forEach((combatant) => {
 		//database.ref(`users/${uid}/combatants/${combatant.id}`).update(combatant);
 	//}).then(() => {
 		//dispatch(startSetInitialCurrentCombatant(combatants));
-		dispatch(setCombatants(combatants));		
-	});
+		//dispatch(setCombatants(combatants));		
+	//});
 
 	};
 	
