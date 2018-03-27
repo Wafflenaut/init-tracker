@@ -4,7 +4,7 @@ import { CombatantListItem } from './CombatantListItem';
 import { currentCombatant } from '../selectors/combatants';
 import { startSetCombatantActiveStatus } from '../actions/combatants';
 
-export class SurpriseList extends React.Component{
+export class CurrentCombatant extends React.Component{
 	onClickActive = (id, active) => {
 		this.props.startSetCombatantActiveStatus(id, active);
 	};
@@ -47,4 +47,4 @@ const mapStateToProps = (state, props) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurpriseList);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentCombatant);

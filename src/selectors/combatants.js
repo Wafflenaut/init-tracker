@@ -6,9 +6,10 @@ export const sortCombatants = ( combatants) => {
 };
 
 export const currentCombatant = ( combatants, filters) => {
-	return combatants.filter((combatant) => {
-		return combatant.id == filters.currentCombatantId;
-	});
+	console.log(filters);
+	const currCombatant = combatants.filter(combatant => combatant.id == filters.currentCombatantId);
+	console.log(currCombatant);
+	return currCombatant;
 };
 
 export const initialCurrentCombatant = (combatants) => {

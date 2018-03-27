@@ -1,7 +1,7 @@
 const filtersReducerDefaultState = {
 	playersWinTies: false,
-	currentCombatantID: '',
-	currentCombatantOrder: Infinity
+	currentCombatantId: '',
+	currentCombatantOrder: 0
 };
 
 export default (state = filtersReducerDefaultState, action) => {
@@ -14,8 +14,8 @@ export default (state = filtersReducerDefaultState, action) => {
 		case 'SET_CURRENT_COMBATANT':
 			return {
 				...state,
-				currentCombatantId: action.currentCombatant.id,
-				currentCombatantOrder: action.currentCombatant.order
+				currentCombatantId: action.currentCombatantId,
+				currentCombatantOrder: action.currentCombatantOrder
 			}
 		default:
 			return state;

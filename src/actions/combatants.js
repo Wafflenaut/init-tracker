@@ -1,6 +1,5 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
-import { startSetInitialCurrentCombatant } from './filters';
 
 export const addCombatant = (combatant) => ({
 	type: 'ADD_COMBATANT',

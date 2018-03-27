@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+import database from '../firebase/firebase';
 import { initialCurrentCombatant } from '../selectors/combatants';
 
 export const setPlayersWinTies = ( playersWinTies = false) => ({
@@ -5,9 +7,33 @@ export const setPlayersWinTies = ( playersWinTies = false) => ({
 	playersWinTies
 });
 
-export const startSetInitialCurrentCombatant = (combatants) => {
-	const initialCombatant = initialCurrentCombatant(combatants);
-	setCurrentCombatant(initialCombatant.id, initialCombatant.order);
+export const startSetInitialCurrentCombatant = () => {
+	return (dispatch, getState) => {
+		const combatants = getState().combatants;
+		const filters = getState().filters;
+		const uid = getState().auth.uid;
+		let surpriseCombatants = combatants.filter(combatant => combatant.surprise === true);
+		let initialCombatant = {}
+		
+		if(surpriseCombatants.length === 0){	
+			initialCombatant = combatants.filter(combatant => combatant.order == 1)[0];	
+		}
+		else{
+			surpriseCombatants.sort((a,b) => {return a.order-b.order});
+			initialCombatant = surpriseCombatants[0];
+		}
+		const currentCombatantId = initialCombatant.id;
+		const currentCombatantOrder = initialCombatant.order;
+		
+		return database.ref(`users/${uid}/filters`).update({
+			...filters,
+			currentCombatantId,
+			currentCombatantOrder
+		}).then(() => {
+			dispatch(setCurrentCombatant(initialCombatant.id, initialCombatant.order));
+		});
+		
+	};
 };
 
 export const setCurrentCombatant = ( currentCombatantId = '', currentCombatantOrder = 0) => ({

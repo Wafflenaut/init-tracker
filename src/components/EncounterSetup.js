@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sortCombatants } from '../selectors/combatants';
 import { startInitiateEncounter } from '../actions/combatants';
+import { startSetInitialCurrentCombatant } from '../actions/filters';
 
 export class EncounterSetup extends React.Component {
 	constructor(props){
@@ -20,14 +21,25 @@ export class EncounterSetup extends React.Component {
 	
 	onClick = (e) => {
 
-		console.log('Encounter Submit State');
-		console.log(this.props.combatants);
+		console.log('Encounter Starting...');
 		if( this.props.combatants.length < 2 ){
 			this.setState(() => ({error: 'An encounter must have at least two combatants.'}));
 		}
 		else {
 			this.setState(() => ({error: ''}));
 			this.props.startInitiateEncounter();
+			this.props.startSetInitialCurrentCombatant();
+
+			/*
+			let encounterSetupInit = new Promise(() => {
+				this.props.startInitiateEncounter()
+			});
+			encounterSetupInit.then(() => {
+				this.props.startSetInitialCurrentCombatant();
+			});*/
+			//this.props.startInitiateEncounter();
+			
+			
 		}
 		this.props.history.push('/encounter');
 		console.log(this.props);
@@ -58,7 +70,8 @@ export class EncounterSetup extends React.Component {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	startInitiateEncounter: () => dispatch(startInitiateEncounter())
+	startInitiateEncounter: () => dispatch(startInitiateEncounter()),
+	startSetInitialCurrentCombatant: () => dispatch(startSetInitialCurrentCombatant())
 });
 
 const mapStateToProps = (state) => {
