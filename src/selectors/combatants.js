@@ -6,10 +6,15 @@ export const sortCombatants = ( combatants) => {
 
 export const currentCombatant = ( combatants, encounter) => {
 	//const currCombatantId = encounter.currCombatantId ? encounter.currCombatantId : 
-	console.log('current combatant');
+	
 	console.log(encounter)
 	const currCombatant = combatants.filter(combatant => combatant.id === encounter.currentCombatantId);
-	return currCombatant;
+	if(currCombatant.length > 0){
+		return currCombatant[0];
+	}
+	else{
+		return null;
+	}
 };
 
 export const initialCurrentCombatant = (combatants) => {

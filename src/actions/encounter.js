@@ -1,6 +1,9 @@
 import uuid from 'uuid';
 import database from '../firebase/firebase';
 import { initialCurrentCombatant } from '../selectors/combatants';
+import { surpriseCombatants } from '../selectors/surpriseCombatants';
+import { activeCombatants } from '../selectors/activeCombatants';
+
 
 export const setPlayersWinTies = ( playersWinTies = false) => ({
 	type: 'SET_PLAYERS_WIN_TIES',
@@ -17,6 +20,22 @@ export const startSetPlayersWinTies = ( playersWinTies = false ) => {
 		});
 	}
 }
+/*
+export const setPlayersWinTies = ( playersWinTies = false) => ({
+	type: 'SET_PLAYERS_WIN_TIES',
+	playersWinTies
+});
+
+export const startSetPlayersWinTies = ( playersWinTies = false ) => {
+	return (dispatch, getState) => {
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/encounter`).update({
+			playersWinTies
+		}).then(() => {
+			dispatch(setPlayersWinTies(playersWinTies));
+		});
+	}
+}*/
 
 export const startSetInitialCurrentCombatant = () => {
 	return (dispatch, getState) => {
@@ -63,6 +82,43 @@ export const startSetCurrentCombatant = (currentCombatantId = '', currentCombata
 			currentCombatantOrder
 		}).then(() => {
 			dispatch(setCurrentCombatant(currentCombatantId, currentCombatantOrder));
+		});
+	};
+};
+
+export const startSetNextCombatant = (prevCombatantId = '', prevCombatantOrder = 0) => {
+	return (dispatch, getState) => {
+		
+		const combatants = getState().combatants;
+		const encounter = getState().encounter;
+		let nextCombatantId = '';
+		let nextCombatantOrder = 0;
+		const surpriseCombatantsList = surpriseCombatants(combatants, encounter);
+		
+		if(surpriseCombatantsList.length > 0){
+			console.log('Surprise list length' + surpriseCombatants.length);
+			nextCombatantId = surpriseCombatantsList[0].id;
+			nextCombatantOrder = surpriseCombatantsList[0].order;
+		}
+		else{
+			const activeCombatantsList = activeCombatants(combatants, encounter);
+			if(activeCombatantsList.length > 0){
+				nextCombatantId = activeCombatantsList[0].id;
+				nextCombatantOrder = activeCombatantsList[0].order;
+			}
+			else{
+				//no remaining active combatants
+				nextCombatantId = '';
+				nextCombatantOrder = 0;
+			}
+		}
+		
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/encounter`).update({
+			currentCombatantId: nextCombatantId,
+			currentCombatantOrder: nextCombatantOrder
+		}).then(() => {
+			dispatch(setCurrentCombatant(nextCombatantId, nextCombatantOrder));
 		});
 	};
 };
