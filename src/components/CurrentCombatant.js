@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { CombatantListItem } from './CombatantListItem';
 import { currentCombatant } from '../selectors/combatants';
 import { startSetCombatantActiveStatus, startNotSurpriseLowerOrderCombatants } from '../actions/combatants';
-import { startSetNextCombatant } from '../actions/encounter';
+import { startSetNextCombatant, startAlterActiveCombatantOrder } from '../actions/encounter';
 
 export class CurrentCombatant extends React.Component{
 	onClickActive = () => {
 		this.props.startNotSurpriseLowerOrderCombatants(this.props.combatant.order);
 		this.props.startSetCombatantActiveStatus(this.props.combatant.id, !this.props.combatant.active);
 		this.props.startSetNextCombatant(this.props.combatant.order);
+		this.props.startAlterActiveCombatantOrder();
 		//need to remove surprise (check to see if there are any surprised list is empty, and if current is not surprised... 
 		//if so, remove all surprised (this targets inactive combatants that may have had surprise round actions unused
 	};
@@ -17,6 +18,7 @@ export class CurrentCombatant extends React.Component{
 	onClickEndTurn = () => {
 		this.props.startNotSurpriseLowerOrderCombatants(this.props.combatant.order);
 		this.props.startSetNextCombatant(this.props.combatant.order);
+		this.props.startAlterActiveCombatantOrder();
 		//need to remove surprise
 	};
 		
@@ -52,7 +54,8 @@ export class CurrentCombatant extends React.Component{
 const mapDispatchToProps = (dispatch) => ({
 	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active)),
 	startNotSurpriseLowerOrderCombatants: (order) => dispatch(startNotSurpriseLowerOrderCombatants(order)),
-	startSetNextCombatant: (order) => dispatch(startSetNextCombatant(order))
+	startSetNextCombatant: (order) => dispatch(startSetNextCombatant(order)),
+	startAlterActiveCombatantOrder : () => dispatch(startAlterActiveCombatantOrder())
 });
 
 const mapStateToProps = (state, props) => {

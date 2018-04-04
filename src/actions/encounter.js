@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import database from '../firebase/firebase';
 import { initialCurrentCombatant } from '../selectors/combatants';
 import { surpriseCombatants } from '../selectors/surpriseCombatants';
-import { activeCombatants } from '../selectors/activeCombatants';
+import { activeCombatants, orderedActiveCombatants } from '../selectors/activeCombatants';
 
 
 export const setPlayersWinTies = ( playersWinTies = false) => ({
@@ -20,6 +20,21 @@ export const startSetPlayersWinTies = ( playersWinTies = false ) => {
 		});
 	}
 }
+
+export const alterActiveCombatantOrder = (orderedCombatants = []) => ({
+	type: 'ALTER_ACTIVE_COMBATANT_ORDER',
+	orderedCombatants
+})
+
+export const startAlterActiveCombatantOrder = () => {
+	return (dispatch, getState) => {
+		const combatants = getState().combatants;
+		const encounter = getState().encounter;
+		
+		const orderedCombatants = orderedActiveCombatants(combatants, encounter);
+		dispatch(alterActiveCombatantOrder(orderedCombatants));
+	};
+};
 /*
 export const setPlayersWinTies = ( playersWinTies = false) => ({
 	type: 'SET_PLAYERS_WIN_TIES',

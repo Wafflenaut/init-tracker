@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sortCombatants } from '../selectors/combatants';
 import { startInitiateEncounter } from '../actions/combatants';
-import { startSetPlayersWinTies, startSetInitialCurrentCombatant } from '../actions/encounter';
+import { startSetPlayersWinTies, startSetInitialCurrentCombatant, startAlterActiveCombatantOrder } from '../actions/encounter';
 
 
 export class EncounterSetup extends React.Component {
@@ -34,6 +34,7 @@ export class EncounterSetup extends React.Component {
 			this.props.startInitiateEncounter();
 			this.props.startSetInitialCurrentCombatant();
 			this.props.startSetPlayersWinTies(this.state.playersWinTies);
+			this.props.startAlterActiveCombatantOrder();
 
 			/*
 			let encounterSetupInit = new Promise(() => {
@@ -75,7 +76,8 @@ export class EncounterSetup extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
 	startInitiateEncounter: () => dispatch(startInitiateEncounter()),
 	startSetInitialCurrentCombatant: () => dispatch(startSetInitialCurrentCombatant()),
-	startSetPlayersWinTies: (playersWinTies) => dispatch(startSetPlayersWinTies(playersWinTies))
+	startSetPlayersWinTies: (playersWinTies) => dispatch(startSetPlayersWinTies(playersWinTies)),
+	startAlterActiveCombatantOrder: () => dispatch(startAlterActiveCombatantOrder())
 });
 
 const mapStateToProps = (state) => {

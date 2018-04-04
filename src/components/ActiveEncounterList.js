@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { CombatantListItem } from './CombatantListItem';
-import { activeCombatants } from '../selectors/activeCombatants';
+import { orderedActiveCombatants } from '../selectors/activeCombatants';
 import { startSetCombatantActiveStatus } from '../actions/combatants';
+import { encounterOrderedCombatants } from '../selectors/encounter';
+import { startAlterActiveCombatantOrder } from '../actions/encounter';
 
 export class ActiveEncounterList extends React.Component {
 		
 	onClick = (id, active) => {
 		this.props.startSetCombatantActiveStatus(id, active);
+		this.props.startAlterActiveCombatantOrder();
 	};
 	
 	render() {
@@ -34,12 +37,14 @@ export class ActiveEncounterList extends React.Component {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active))
+	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active)),
+	startAlterActiveCombatantOrder: () => dispatch(startAlterActiveCombatantOrder())
 });
 
 const mapStateToProps = (state) => {
 	return {
-		combatants: activeCombatants(state.combatants, state.encounter)
+		//combatants: orderedActiveCombatants(state.combatants, state.encounter)
+		combatants: encounterOrderedCombatants(state.encounter)
 	};
 };
 

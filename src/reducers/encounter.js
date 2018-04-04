@@ -1,7 +1,8 @@
 const encounterReducerDefaultState = {
 	playersWinTies: false,
 	currentCombatantId: '',
-	currentCombatantOrder: 0
+	currentCombatantOrder: 0,
+	orderedCombatants: []
 };
 
 export default (state = encounterReducerDefaultState, action) => {
@@ -21,6 +22,11 @@ export default (state = encounterReducerDefaultState, action) => {
 				...state,
 				currentCombatantId: action.currentCombatantId,
 				currentCombatantOrder: action.currentCombatantOrder
+			}
+		case 'ALTER_ACTIVE_COMBATANT_ORDER':
+			return {
+				...state,
+				orderedCombatants: action.orderedCombatants
 			}
 		case 'SET_ENCOUNTER':
 			console.log('set_encounter state')
