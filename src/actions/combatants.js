@@ -173,6 +173,34 @@ export const startInitiateEncounter = () => {
 	
 };
 
+//set all combatants with a lower order and surprise to no longer be surprised
+export const startNotSurpriseLowerOrderCombatants = (prevCombatantOrder = 0) => {
+	return (dispatch, getState) => {
+		const uid = getState().auth.uid;
+		let combatants = getState().combatants;
+				
+		var mapPromise =  combatants.map((combatant) => {
+			if(combatant.order <= prevCombatantOrder && combatant.surprise == true){
+				database.ref(`users/${uid}/combatants/${combatant.id}`).update({
+					...combatant,
+					surprise: false
+				});
+				return {
+					...combatant,
+					surprise: false
+					};
+			}
+			else{
+				return combatant;
+			}
+		});
+	
+		Promise.all(mapPromise).then(()=> {
+			dispatch(setCombatants(mapPromise));
+		});
+		};
+};
+
 
 export const setCombatants = (combatants) => ({
 	type: 'SET_COMBATANTS',

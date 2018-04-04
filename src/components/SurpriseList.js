@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state, props) => {
 	return {
-		combatants: surpriseCombatants(state.combatants, state.filters)
+		combatants: surpriseCombatants(state.combatants, state.encounter)
 	};
 };
 

@@ -86,7 +86,9 @@ export const startSetCurrentCombatant = (currentCombatantId = '', currentCombata
 	};
 };
 
-export const startSetNextCombatant = (prevCombatantId = '', prevCombatantOrder = 0) => {
+
+
+export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 	return (dispatch, getState) => {
 		
 		const combatants = getState().combatants;
@@ -94,6 +96,8 @@ export const startSetNextCombatant = (prevCombatantId = '', prevCombatantOrder =
 		let nextCombatantId = '';
 		let nextCombatantOrder = 0;
 		const surpriseCombatantsList = surpriseCombatants(combatants, encounter);
+		
+		
 		
 		if(surpriseCombatantsList.length > 0){
 			console.log('Surprise list length' + surpriseCombatants.length);
@@ -103,8 +107,16 @@ export const startSetNextCombatant = (prevCombatantId = '', prevCombatantOrder =
 		else{
 			const activeCombatantsList = activeCombatants(combatants, encounter);
 			if(activeCombatantsList.length > 0){
-				nextCombatantId = activeCombatantsList[0].id;
-				nextCombatantOrder = activeCombatantsList[0].order;
+				const eligibleActiveCombatantsList = activeCombatantsList.filter(combatant => combatant.order > prevCombatantOrder);
+				if(eligibleActiveCombatantsList.length > 0){
+					console.log('eligible active combatants: ' + prevCombatantOrder)
+					nextCombatantId = eligibleActiveCombatantsList[0].id;
+					nextCombatantOrder = eligibleActiveCombatantsList[0].order;
+				}
+				else{
+					nextCombatantId = activeCombatantsList[0].id;
+					nextCombatantOrder = activeCombatantsList[0].order;
+				}
 			}
 			else{
 				//no remaining active combatants
@@ -112,6 +124,9 @@ export const startSetNextCombatant = (prevCombatantId = '', prevCombatantOrder =
 				nextCombatantOrder = 0;
 			}
 		}
+		
+		console.log('nextCombatantId: ' + nextCombatantId);
+		console.log('nextCombatantOrder: ' + nextCombatantOrder);
 		
 		const uid = getState().auth.uid;
 		return database.ref(`users/${uid}/encounter`).update({

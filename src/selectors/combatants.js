@@ -8,7 +8,8 @@ export const currentCombatant = ( combatants, encounter) => {
 	//const currCombatantId = encounter.currCombatantId ? encounter.currCombatantId : 
 	
 	console.log(encounter)
-	const currCombatant = combatants.filter(combatant => combatant.id === encounter.currentCombatantId);
+	const currentCombatantId = encounter.currentCombatantId ? encounter.currentCombatantId : '';
+	const currCombatant = combatants.filter(combatant => combatant.id === currentCombatantId);
 	if(currCombatant.length > 0){
 		return currCombatant[0];
 	}

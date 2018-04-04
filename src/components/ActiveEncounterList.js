@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => {
 	return {
-		combatants: activeCombatants(state.combatants, state.filters)
+		combatants: activeCombatants(state.combatants, state.encounter)
 	};
 };
 
