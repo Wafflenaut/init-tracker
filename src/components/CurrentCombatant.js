@@ -9,16 +9,18 @@ export class CurrentCombatant extends React.Component{
 	onClickActive = () => {
 		this.props.startNotSurpriseLowerOrderCombatants(this.props.combatant.order);
 		this.props.startSetCombatantActiveStatus(this.props.combatant.id, !this.props.combatant.active);
-		this.props.startSetNextCombatant(this.props.combatant.order);
-		this.props.startAlterActiveCombatantOrder();
+		const setNextCombatant = this.props.startSetNextCombatant(this.props.combatant.order);
+		setNextCombatant.then(this.props.startAlterActiveCombatantOrder());
 		//need to remove surprise (check to see if there are any surprised list is empty, and if current is not surprised... 
 		//if so, remove all surprised (this targets inactive combatants that may have had surprise round actions unused
 	};
 	
 	onClickEndTurn = () => {
 		this.props.startNotSurpriseLowerOrderCombatants(this.props.combatant.order);
-		this.props.startSetNextCombatant(this.props.combatant.order);
-		this.props.startAlterActiveCombatantOrder();
+		const setNextCombatant = this.props.startSetNextCombatant(this.props.combatant.order);
+		setNextCombatant.then(this.props.startAlterActiveCombatantOrder());
+		//this.props.startSetNextCombatant(this.props.combatant.order);
+		//this.props.startAlterActiveCombatantOrder();
 		//need to remove surprise
 	};
 		

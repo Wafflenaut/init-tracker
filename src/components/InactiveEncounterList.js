@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { CombatantListItem } from './CombatantListItem';
 import { inactiveCombatants } from '../selectors/inactiveCombatants';
 import { startSetCombatantActiveStatus } from '../actions/combatants';
+import { startAlterActiveCombatantOrder } from '../actions/encounter';
 
 export class InactiveEncounterList extends React.Component {
 	
 	onClick = (id, active) => {
 		this.props.startSetCombatantActiveStatus(id, active);
+		this.props.startAlterActiveCombatantOrder();
 	};
 	
 	render() {
@@ -33,7 +35,8 @@ export class InactiveEncounterList extends React.Component {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active))
+	startSetCombatantActiveStatus: (id, active) => dispatch(startSetCombatantActiveStatus(id, active)),
+	startAlterActiveCombatantOrder: () => dispatch(startAlterActiveCombatantOrder())
 });
 
 const mapStateToProps = (state) => {

@@ -24,6 +24,7 @@ export default (state = encounterReducerDefaultState, action) => {
 				currentCombatantOrder: action.currentCombatantOrder
 			}
 		case 'ALTER_ACTIVE_COMBATANT_ORDER':
+		console.log('Altering active combatant order');
 			return {
 				...state,
 				orderedCombatants: action.orderedCombatants

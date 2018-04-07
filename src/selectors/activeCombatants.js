@@ -9,9 +9,7 @@ export const activeCombatants = ( combatants, encounter) => {
 		
 		return active && currentCombatantId != id;
 	}).sort((a, b) => {
-		return combatants.sort((a,b) => {
-			return a.initiativeRoll > b.initiativeRoll ? -1 : 1;
-		});
+			return a.order - b.order;
 	});
 };
 
@@ -19,43 +17,45 @@ export const activeCombatants = ( combatants, encounter) => {
 //followed by the combatants that took turns before the active combatant
 export const orderedActiveCombatants = (combatants, encounter) => {
 	let orderedCombatants = postActiveCombatants(combatants, encounter);
+	console.log('Current Combatant in activeCombatants selector: ' + encounter.currentCombatantOrder);
+	console.log('Post Active Combatants');
+	console.log(orderedCombatants);
 	orderedCombatants = orderedCombatants.concat(preActiveCombatants(combatants, encounter));
+	console.log('Ordered Combatants');
 	console.log(orderedCombatants);
 	
 	return orderedCombatants;
 }
 
 export const preActiveCombatants = ( combatants, encounter) => {
+	const currentCombatantId = encounter.currentCombatantId ? encounter.currentCombatantId : '';
+	const currentCombatantOrder = encounter.currentCombatantOrder ? encounter.currentCombatantOrder : '';
 
-	return combatants.filter((combatant, encounter) => {
+	return combatants.filter((combatant) => {
 		const active = combatant.active;
 		const id = combatant.id;
 		const order = combatant.order;
-		const currentCombatantId = encounter.currentCombatantId ? encounter.currentCombatantId : '';
-		const currentCombatantOrder = encounter.currentCombatantOrder ? encounter.currentCombatantOrder : '';
-		console.log(currentCombatantId + " " + currentCombatantOrder);
+
+		//console.log(currentCombatantId + " " + currentCombatantOrder);
 		
 		return active && currentCombatantId != id && order < currentCombatantOrder;
 	}).sort((a, b) => {
-		return combatants.sort((a,b) => {
-			return a.initiativeRoll > b.initiativeRoll ? -1 : 1;
-		});
+			return a.initiativeRoll - b.initiativeRoll;
 	});
 };
 
 export const postActiveCombatants = ( combatants, encounter) => {
+	const currentCombatantId = encounter.currentCombatantId ? encounter.currentCombatantId : '';
+	const currentCombatantOrder = encounter.currentCombatantOrder ? encounter.currentCombatantOrder : '';
 
-	return combatants.filter((combatant, encounter) => {
+
+	return combatants.filter((combatant) => {
 		const active = combatant.active;
 		const id = combatant.id;
 		const order = combatant.order;
-		const currentCombatantId = encounter.currentCombatantId ? encounter.currentCombatantId : '';
-		const currentCombatantOrder = encounter.currentCombatantOrder ? encounter.currentCombatantOrder : '';
 		
 		return active && currentCombatantId != id && order > currentCombatantOrder;
 	}).sort((a, b) => {
-		return combatants.sort((a,b) => {
-			return a.initiativeRoll > b.initiativeRoll ? -1 : 1;
-		});
+			return a.initiativeRoll - b.initiativeRoll;
 	});
 };

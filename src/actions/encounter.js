@@ -30,8 +30,12 @@ export const startAlterActiveCombatantOrder = () => {
 	return (dispatch, getState) => {
 		const combatants = getState().combatants;
 		const encounter = getState().encounter;
+		console.log('There is an encounter');
+		console.log(encounter)
 		
 		const orderedCombatants = orderedActiveCombatants(combatants, encounter);
+		console.log('Ordered combatants in encounter action');
+		console.log(orderedCombatants);
 		dispatch(alterActiveCombatantOrder(orderedCombatants));
 	};
 };
@@ -121,10 +125,12 @@ export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 		}
 		else{
 			const activeCombatantsList = activeCombatants(combatants, encounter);
+			console.log('Is this sorted');
+			console.log(activeCombatantsList);
 			if(activeCombatantsList.length > 0){
 				const eligibleActiveCombatantsList = activeCombatantsList.filter(combatant => combatant.order > prevCombatantOrder);
 				if(eligibleActiveCombatantsList.length > 0){
-					console.log('eligible active combatants: ' + prevCombatantOrder)
+					//console.log('eligible active combatants: ' + prevCombatantOrder)
 					nextCombatantId = eligibleActiveCombatantsList[0].id;
 					nextCombatantOrder = eligibleActiveCombatantsList[0].order;
 				}
@@ -140,7 +146,7 @@ export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 			}
 		}
 		
-		console.log('nextCombatantId: ' + nextCombatantId);
+		//console.log('nextCombatantId: ' + nextCombatantId);
 		console.log('nextCombatantOrder: ' + nextCombatantOrder);
 		
 		const uid = getState().auth.uid;
@@ -148,6 +154,7 @@ export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 			currentCombatantId: nextCombatantId,
 			currentCombatantOrder: nextCombatantOrder
 		}).then(() => {
+			console.log('setting current combatant in startSetNextCombatant: ' + nextCombatantOrder);
 			dispatch(setCurrentCombatant(nextCombatantId, nextCombatantOrder));
 		});
 	};
@@ -182,9 +189,9 @@ export const startSetEncounter = () => {
 		return database.ref(`users/${uid}/encounter`)
 			.once('value')
 			.then((snapshot) => {
-				console.log('encounter snapshot');
-				console.log(snapshot.val());
-				console.log('encounter snapshot end');
+				//console.log('encounter snapshot');
+				//console.log(snapshot.val());
+				//console.log('encounter snapshot end');
 				const encounter = snapshot.val();
 				
 			dispatch(setEncounter(encounter));
