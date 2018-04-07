@@ -3,6 +3,7 @@ import database from '../firebase/firebase';
 import { initialCurrentCombatant } from '../selectors/combatants';
 import { surpriseCombatants } from '../selectors/surpriseCombatants';
 import { activeCombatants, orderedActiveCombatants } from '../selectors/activeCombatants';
+import { encounterNextCombatant } from '../selectors/encounter';
 
 
 export const setPlayersWinTies = ( playersWinTies = false) => ({
@@ -112,6 +113,7 @@ export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 		
 		const combatants = getState().combatants;
 		const encounter = getState().encounter;
+		/*
 		let nextCombatantId = '';
 		let nextCombatantOrder = 0;
 		const surpriseCombatantsList = surpriseCombatants(combatants, encounter);
@@ -156,6 +158,17 @@ export const startSetNextCombatant = (prevCombatantOrder = 0) => {
 		}).then(() => {
 			console.log('setting current combatant in startSetNextCombatant: ' + nextCombatantOrder);
 			dispatch(setCurrentCombatant(nextCombatantId, nextCombatantOrder));
+		});
+		*/
+		const nextCombatant = encounterNextCombatant(combatants, encounter, prevCombatantOrder);
+		
+		const uid = getState().auth.uid;
+		return database.ref(`users/${uid}/encounter`).update({
+			currentCombatantId: nextCombatant.id,
+			currentCombatantOrder: nextCombatant.order
+		}).then(() => {
+			console.log('setting current combatant in startSetNextCombatant: ' + nextCombatant.order);
+			dispatch(setCurrentCombatant(nextCombatant.id, nextCombatant.order));
 		});
 	};
 };
