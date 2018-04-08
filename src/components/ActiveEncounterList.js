@@ -43,8 +43,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => {
 	return {
-		//combatants: orderedActiveCombatants(state.combatants, state.encounter)
-		combatants: encounterOrderedCombatants(state.encounter)
+		combatants: orderedActiveCombatants(state.combatants, state.encounter)
+		//combatants: encounterOrderedCombatants(state.encounter)
 	};
 };
 

@@ -42,7 +42,7 @@ export const encounterNextCombatant = (combatants, encounter, prevCombatantOrder
 		}
 		
 		//console.log('nextCombatantId: ' + nextCombatantId);
-		console.log('nextCombatantOrder: ' + nextCombatantOrder);
+		console.log('nextCombatantOrder: ' + nextCombatant.order);
 
 		return nextCombatant;
 }
