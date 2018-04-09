@@ -10,8 +10,12 @@ export const surpriseCombatants = ( combatants, encounter) => {
 		
 		return active && surprise && currentCombatantId != id;
 	}).sort((a, b) => {
-		return combatants.sort((a,b) => {
-			return a.initiativeRoll > b.initiativeRoll ? 1 : -1;
-		});
+			if(a.order > b.order){
+				return 1;
+			}
+			else if(a.order < b.order){
+				return -1;
+			}
+			return 0;
 	});
 };

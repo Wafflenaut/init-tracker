@@ -23,7 +23,16 @@ export class EncounterSetup extends React.Component {
 		this.setState(() => ({playersWinTies}));
 	};
 	
-	onClick = (e) => {
+	initialEncounterSetup = async () => {
+		try {
+			this.props.startInitiateEncounter();
+		}
+		catch (error) {
+			console.log(error);
+		}
+	}
+	
+	onClick = async (e) => {
 
 		console.log('Encounter Starting...');
 		if( this.props.combatants.length < 2 ){
@@ -31,7 +40,8 @@ export class EncounterSetup extends React.Component {
 		}
 		else {
 			this.setState(() => ({error: ''}));
-			this.props.startInitiateEncounter();
+			//await this.props.startInitiateEncounter();
+			await this.initialEncounterSetup();
 			this.props.startSetInitialCurrentCombatant();
 			this.props.startSetPlayersWinTies(this.state.playersWinTies);
 			this.props.startAlterActiveCombatantOrder();

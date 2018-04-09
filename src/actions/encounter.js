@@ -12,11 +12,13 @@ export const setPlayersWinTies = ( playersWinTies = false) => ({
 });
 
 export const startSetPlayersWinTies = ( playersWinTies = false ) => {
+	console.log('startSetPlayersWinTies');
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
 		return database.ref(`users/${uid}/encounter`).update({
 			playersWinTies
 		}).then(() => {
+			console.log('done with startsetplayerswinties');
 			dispatch(setPlayersWinTies(playersWinTies));
 		});
 	}
@@ -28,6 +30,7 @@ export const alterActiveCombatantOrder = (orderedCombatants = []) => ({
 })
 
 export const startAlterActiveCombatantOrder = () => {
+	console.log('startalteractivecombatantorder');
 	return (dispatch, getState) => {
 		const combatants = getState().combatants;
 		const encounter = getState().encounter;
@@ -40,22 +43,6 @@ export const startAlterActiveCombatantOrder = () => {
 		dispatch(alterActiveCombatantOrder(orderedCombatants));
 	};
 };
-/*
-export const setPlayersWinTies = ( playersWinTies = false) => ({
-	type: 'SET_PLAYERS_WIN_TIES',
-	playersWinTies
-});
-
-export const startSetPlayersWinTies = ( playersWinTies = false ) => {
-	return (dispatch, getState) => {
-		const uid = getState().auth.uid;
-		return database.ref(`users/${uid}/encounter`).update({
-			playersWinTies
-		}).then(() => {
-			dispatch(setPlayersWinTies(playersWinTies));
-		});
-	}
-}*/
 
 export const startSetInitialCurrentCombatant = () => {
 	return (dispatch, getState) => {
@@ -64,15 +51,20 @@ export const startSetInitialCurrentCombatant = () => {
 		console.log('encounter in startSetInitialCurrentCombatant');
 		console.log(encounter);
 		const uid = getState().auth.uid;
-		let surpriseCombatants = combatants.filter(combatant => combatant.surprise === true);
+		//let surpriseCombatants = combatants.filter(combatant => combatant.surprise === true);
+		let surprisedCombatants = surpriseCombatants(combatants, encounter);
+		
+		console.log('\n\n\n');
+		console.log(surprisedCombatants);
+		console.log('\n\n\n');
 		let initialCombatant = {}
 		
-		if(surpriseCombatants.length === 0){	
+		if(surprisedCombatants.length === 0){	
 			initialCombatant = combatants.filter(combatant => combatant.order == 1)[0];	
 		}
 		else{
-			surpriseCombatants.sort((a,b) => {return a.order-b.order});
-			initialCombatant = surpriseCombatants[0];
+			//surpriseCombatants.sort((a,b) => {return a.order-b.order});
+			initialCombatant = surprisedCombatants[0];
 		}
 		const currentCombatantId = initialCombatant.id;
 		const currentCombatantOrder = initialCombatant.order;
@@ -82,6 +74,7 @@ export const startSetInitialCurrentCombatant = () => {
 			currentCombatantId,
 			currentCombatantOrder
 		}).then(() => {
+			console.log('done with startSetInitialCurrentCombatant');
 			dispatch(setCurrentCombatant(initialCombatant.id, initialCombatant.order));
 		});
 		

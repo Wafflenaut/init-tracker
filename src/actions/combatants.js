@@ -84,7 +84,7 @@ export const startSetCombatantActiveStatus = (id, active) => {
 
 
 export const startInitiateEncounter = () => {
-	
+	console.log('startInitiateEncounter');
 	return (dispatch, getState) => {
 		const uid = getState().auth.uid;
 		let combatants = []
@@ -97,19 +97,7 @@ export const startInitiateEncounter = () => {
 				initiativeRoll
 			});
 		});
-		
 
-		/*
-		tempCombatants = tempCombatants.map((combatant) => {
-			//simulates rolling a 1d20 + initiative bonus, but with less granularity to avoid ties
-			combatant.initiativeRoll = Math.floor(Math.random() * (20000)) + 1 + (combatant.initiativeBonus * 1000);
-		});
-		console.log('Combatants after init roll');
-		console.log(combatants);
-		*/	
-		//sorts combatants first by initiative order
-		//then by whichever type wins ties
-		//then randomly in the event the types are the same
 		combatants = combatants.sort((a, b) => {
 			if(a.initiativeRoll < b.initiativeRoll){
 				return 1;
@@ -150,6 +138,7 @@ export const startInitiateEncounter = () => {
 	});
 	
 	Promise.all(mapPromise).then(()=> {
+		console.log('done with startinitiateencounter');
 		dispatch(setCombatants(combatants));
 	});
 
